@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "bastichunkchallange",
+  "version": "${version}",
+  "name": "BastiChunkChallange",
+  "description": "Chunk monster battle mod",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/bastichunkchallange/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.felixWegener.bastichunkchallange.client.BastichunkchallangeClient"
+    ],
+    "main": [
+      "org.felixWegener.bastichunkchallange.Bastichunkchallange"
+    ]
+  },
+  "mixins": [
+    "bastichunkchallange.mixins.json",
+    {
+      "config": "bastichunkchallange.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
