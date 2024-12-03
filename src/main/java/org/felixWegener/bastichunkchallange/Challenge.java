@@ -29,7 +29,7 @@ public class Challenge {
             for (ServerWorld world : server.getWorlds()) {
                 world.getPlayers().forEach(player -> {
 
-                    // Hardcore border reset to be around admin player
+                    // Hardcode border reset to be around admin player
                     if (Objects.equals(player.getName().toString(), "literal{Ich_Bin_AFK}")) {
 
                         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
@@ -47,7 +47,6 @@ public class Challenge {
                                 );
 
                                 PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld);
-                                // mobId.set(MobSpawner.spawnTargetMob(server.getOverworld(), mobSpawnPosition));
                                 Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
 
                                 mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));
@@ -61,7 +60,6 @@ public class Challenge {
                                 if (livingEntity.isDead()) {
 
                                     if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
-                                        // this method is called when the mob that was last spawned dies
                                         mobId.set(null);
                                         PlayerMovementListener.removeWorldBoarderPlayerView(server.getOverworld());
                                     }
