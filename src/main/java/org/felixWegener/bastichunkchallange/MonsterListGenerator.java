@@ -1,0 +1,26 @@
+package org.felixWegener.bastichunkchallange;
+
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.Monster;
+import net.minecraft.registry.Registries;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MonsterListGenerator {
+
+    public static List<EntityType<?>> getAllMonsters() {
+        List<EntityType<?>> monsters = new ArrayList<>();
+
+        // Iteriere über alle registrierten Entitäten
+        Registries.ENTITY_TYPE.stream().forEach(entityType -> {
+            // Prüfe, ob die Entität eine Instanz von Monster ist
+            if (entityType.isSummonable() && entityType.getLootTableKey().isPresent()) {
+                monsters.add(entityType);
+            }
+        });
+
+        return monsters;
+    }
+
+}
