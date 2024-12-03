@@ -1,10 +1,10 @@
 package org.felixWegener.bastichunkchallange;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -15,6 +15,19 @@ public class MobSpawner {
         zombie.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
         world.spawnEntity(zombie);
         return zombie.getUuid();
+    }
+
+    public static <T extends LivingEntity> UUID spawnTargetMobNew(EntityType<?> entityType, ServerWorld world, BlockPos position) {
+        T entity = (T) entityType.spawn(world, position, null);
+
+        if (entity == null) {
+            throw new IllegalArgumentException("Ungültiger EntityType: " + entityType);
+        }
+
+        entity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
+        world.spawnEntity(entity);
+
+        return entity.getUuid();
     }
 
 }

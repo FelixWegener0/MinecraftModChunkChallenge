@@ -23,4 +23,8 @@ public class MonsterListGenerator {
         return monsters;
     }
 
+    public static Integer generateRandomNumber(Integer max) {
+        return (int) ((Math.random() * (max)) + 0);
+    }
+
 }

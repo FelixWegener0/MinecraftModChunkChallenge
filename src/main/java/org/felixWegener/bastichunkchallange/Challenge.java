@@ -21,9 +21,6 @@ public class Challenge {
 
         DelayedTask.register();
         List<EntityType<?>> monsters = MonsterListGenerator.getAllMonsters();
-        for (EntityType<?> monster : monsters) {
-            System.out.println(monster);
-        }
 
         AtomicBoolean delayActive = new AtomicBoolean(false);
         AtomicReference<UUID> mobId = new AtomicReference<>();
@@ -44,13 +41,17 @@ public class Challenge {
 
                                 ServerWorld ServerWorld = server.getOverworld();
                                 BlockPos mobSpawnPosition = new BlockPos(
-                                        serverPlayer.getBlockX() + 10,
+                                        serverPlayer.getBlockX(),
                                         serverPlayer.getBlockY(),
                                         serverPlayer.getBlockZ()
                                 );
 
                                 PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld);
-                                mobId.set(MobSpawner.spawnTargetMob(server.getOverworld(), mobSpawnPosition));
+                                // mobId.set(MobSpawner.spawnTargetMob(server.getOverworld(), mobSpawnPosition));
+                                Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
+
+                                mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));
+                                System.out.println("Spawning new mob: " + monsters.get(randomIndex));
                                 delayActive.set(false);
                             });
                         }
