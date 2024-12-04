@@ -2,7 +2,6 @@ package org.felixWegener.bastichunkchallange;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.ZombieEntity;
@@ -30,7 +29,7 @@ public class MobSpawner {
 
         entity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
         entity.setCustomName(entity.getName());
-        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 10 * 20, 0, false, true));
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING,60 * 60 * 20, 0, false, true));
 
         world.spawnEntity(entity);
 

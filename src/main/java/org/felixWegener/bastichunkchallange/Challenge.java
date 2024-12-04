@@ -40,11 +40,7 @@ public class Challenge {
                             DelayedTask.scheduleDelayedTask(200, () -> {
 
                                 ServerWorld ServerWorld = server.getOverworld();
-                                BlockPos mobSpawnPosition = new BlockPos(
-                                        serverPlayer.getBlockX(),
-                                        serverPlayer.getBlockY(),
-                                        serverPlayer.getBlockZ()
-                                );
+                                BlockPos mobSpawnPosition = new BlockPos(serverPlayer.getBlockX(), serverPlayer.getBlockY(), serverPlayer.getBlockZ());
 
                                 PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld);
                                 Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
@@ -55,23 +51,25 @@ public class Challenge {
                             });
                         }
 
-                        ServerEntityEvents.ENTITY_UNLOAD.register((entity, MCworld) -> {
-                            if (entity instanceof LivingEntity livingEntity) {
-                                if (livingEntity.isDead()) {
-
-                                    if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
-                                        mobId.set(null);
-                                        PlayerMovementListener.removeWorldBoarderPlayerView(server.getOverworld());
-                                    }
-
-                                }
-                            }
-                        });
                     }
 
                 });
             }
         });
+
+        ServerEntityEvents.ENTITY_UNLOAD.register((entity, MCworld) -> {
+            if (entity instanceof LivingEntity livingEntity) {
+                if (livingEntity.isDead()) {
+
+                    if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
+                        mobId.set(null);
+                        PlayerMovementListener.removeWorldBoarderPlayerView(MCworld);
+                    }
+
+                }
+            }
+        });
+
     }
 
 }
