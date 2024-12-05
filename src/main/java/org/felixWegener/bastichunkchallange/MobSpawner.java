@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.entity.attribute.EntityAttributes;
 
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class MobSpawner {
@@ -30,19 +31,15 @@ public class MobSpawner {
         }
 
         entity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
-
         float newHealth = entity.getMaxHealth() * world.getPlayers().size();
 
-        entity.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(newHealth);
+        Objects.requireNonNull(entity.getAttributeInstance(EntityAttributes.MAX_HEALTH)).setBaseValue(newHealth);
         entity.setHealth(newHealth);
-
-        System.out.println("Spawning new mob with health: " + entity.getHealth());
-
         entity.setCustomName(entity.getName());
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING,60 * 60 * 20, 0, false, true));
-
         world.spawnEntity(entity);
 
+        System.out.println("Spawning new mob with health: " + entity.getHealth());
         return entity.getUuid();
     }
 

@@ -27,41 +27,36 @@ public class Challenge {
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerWorld world : server.getWorlds()) {
-                world.getPlayers().forEach(player -> {
 
-                    if (Objects.equals(player.getName().toString(), "literal{Ich_Bin_AFK}")) {
+                if (!world.getPlayers().isEmpty()) {
+                    ServerPlayerEntity chosenPlayer = world.getPlayers().getFirst();
 
-                        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                    if (mobId.get() == null && !delayActive.get()) {
+                        delayActive.set(true);
+                        DelayedTask.scheduleDelayedTask(200, () -> {
 
-                        if (mobId.get() == null && !delayActive.get()) {
-                            delayActive.set(true);
-                            DelayedTask.scheduleDelayedTask(200, () -> {
+                            ServerWorld ServerWorld = server.getOverworld();
+                            BlockPos mobSpawnPosition = new BlockPos(chosenPlayer.getBlockX(), chosenPlayer.getBlockY(), chosenPlayer.getBlockZ());
 
-                                ServerWorld ServerWorld = server.getOverworld();
-                                BlockPos mobSpawnPosition = new BlockPos(serverPlayer.getBlockX(), serverPlayer.getBlockY(), serverPlayer.getBlockZ());
+                            PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld);
+                            Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
 
-                                PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld);
-                                Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
-
-                                mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));
-                                System.out.println("Spawning new mob: " + monsters.get(randomIndex));
-                                delayActive.set(false);
-                            });
-                        }
-
+                            mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));
+                            System.out.println("Spawning new mob: " + monsters.get(randomIndex));
+                            delayActive.set(false);
+                        });
                     }
-
-                });
+                }
             }
         });
 
-        ServerEntityEvents.ENTITY_UNLOAD.register((entity, MCworld) -> {
+        ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
             if (entity instanceof LivingEntity livingEntity) {
                 if (livingEntity.isDead()) {
 
                     if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
                         mobId.set(null);
-                        PlayerMovementListener.removeWorldBoarderPlayerView(MCworld);
+                        PlayerMovementListener.removeWorldBoarderPlayerView(world);
                     }
 
                 }
