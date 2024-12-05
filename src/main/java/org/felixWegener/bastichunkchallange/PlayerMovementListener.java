@@ -12,9 +12,8 @@ public class PlayerMovementListener {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerWorld world : server.getWorlds()) {
                 world.getPlayers().forEach(player -> {
-                    ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                    double playerX = serverPlayer.getX();
-                    double playerZ = serverPlayer.getZ();
+                    double playerX = player.getX();
+                    double playerZ = player.getZ();
 
                     WorldBorder border = world.getWorldBorder();
                     border.setCenter(playerX, playerZ);
@@ -31,14 +30,11 @@ public class PlayerMovementListener {
             border.setCenter(player.getBlockX(), player.getBlockZ());
         });
 
-
         border.setSize(32.0);
-
     }
 
     public static void removeWorldBoarderPlayerView(ServerWorld world) {
         WorldBorder border = world.getWorldBorder();
-
         border.setSize(200000.0);
     }
 

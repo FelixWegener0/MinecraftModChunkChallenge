@@ -18,23 +18,22 @@ public class Challenge {
 
     public static void initChallenge() {
         System.out.println("init challenge");
-
         DelayedTask.register();
-        List<EntityType<?>> monsters = MonsterListGenerator.getAllMonsters();
 
+        List<EntityType<?>> monsters = MonsterListGenerator.getAllMonsters();
         AtomicBoolean delayActive = new AtomicBoolean(false);
         AtomicReference<UUID> mobId = new AtomicReference<>();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            for (ServerWorld world : server.getWorlds()) {
 
+            for (ServerWorld world : server.getWorlds()) {
                 if (!world.getPlayers().isEmpty()) {
                     ServerPlayerEntity chosenPlayer = world.getPlayers().getFirst();
 
                     if (mobId.get() == null && !delayActive.get()) {
                         delayActive.set(true);
-                        DelayedTask.scheduleDelayedTask(200, () -> {
 
+                        DelayedTask.scheduleDelayedTask(200, () -> {
                             ServerWorld ServerWorld = server.getOverworld();
                             BlockPos mobSpawnPosition = new BlockPos(chosenPlayer.getBlockX(), chosenPlayer.getBlockY(), chosenPlayer.getBlockZ());
 
@@ -42,25 +41,28 @@ public class Challenge {
                             Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
 
                             mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));
-                            System.out.println("Spawning new mob: " + monsters.get(randomIndex));
                             delayActive.set(false);
                         });
+
                     }
+
                 }
+
             }
+
         });
 
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+
             if (entity instanceof LivingEntity livingEntity) {
                 if (livingEntity.isDead()) {
-
                     if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
                         mobId.set(null);
                         PlayerMovementListener.removeWorldBoarderPlayerView(world);
                     }
-
                 }
             }
+
         });
 
     }

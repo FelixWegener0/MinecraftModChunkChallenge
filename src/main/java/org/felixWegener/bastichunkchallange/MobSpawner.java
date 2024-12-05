@@ -27,19 +27,19 @@ public class MobSpawner {
         T entity = (T) entityType.spawn(world, position, null);
 
         if (entity == null) {
-            throw new IllegalArgumentException("Ungültiger EntityType: " + entityType);
+            throw new IllegalArgumentException("unknown EntityType: " + entityType);
         }
 
-        entity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
         float newHealth = entity.getMaxHealth() * world.getPlayers().size();
 
+        entity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
         Objects.requireNonNull(entity.getAttributeInstance(EntityAttributes.MAX_HEALTH)).setBaseValue(newHealth);
         entity.setHealth(newHealth);
         entity.setCustomName(entity.getName());
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING,60 * 60 * 20, 0, false, true));
         world.spawnEntity(entity);
 
-        System.out.println("Spawning new mob with health: " + entity.getHealth());
+        System.out.println("Spawning new mob: " + entity.getName() +" with health: " + entity.getHealth());
         return entity.getUuid();
     }
 
