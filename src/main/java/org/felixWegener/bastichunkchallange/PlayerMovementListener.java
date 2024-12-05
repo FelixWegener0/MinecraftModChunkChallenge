@@ -16,7 +16,6 @@ public class PlayerMovementListener {
                     double playerX = serverPlayer.getX();
                     double playerZ = serverPlayer.getZ();
 
-                    // World Border basierend auf der Spielerposition aktualisieren
                     WorldBorder border = world.getWorldBorder();
                     border.setCenter(playerX, playerZ);
                     border.setSize(32.0);

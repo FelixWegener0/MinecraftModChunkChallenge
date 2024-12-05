@@ -7,6 +7,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.entity.attribute.EntityAttributes;
+
 
 import java.util.UUID;
 
@@ -28,6 +30,14 @@ public class MobSpawner {
         }
 
         entity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), 0, 0);
+
+        float newHealth = entity.getMaxHealth() * world.getPlayers().size();
+
+        entity.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(newHealth);
+        entity.setHealth(newHealth);
+
+        System.out.println("Spawning new mob with health: " + entity.getHealth());
+
         entity.setCustomName(entity.getName());
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING,60 * 60 * 20, 0, false, true));
 

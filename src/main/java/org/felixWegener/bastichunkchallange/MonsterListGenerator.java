@@ -13,10 +13,8 @@ public class MonsterListGenerator {
     public static List<EntityType<?>> getAllMonsters() {
         List<EntityType<?>> monsters = new ArrayList<>();
 
-        // Iteriere über alle registrierten Entitäten
         Registries.ENTITY_TYPE.stream().forEach(entityType -> {
-            // Prüfe, ob die Entität eine Instanz von Monster ist
-            if (entityType.isSummonable() && entityType.getLootTableKey().isPresent() && !Objects.equals(entityType.toString(), "entity.minecraft.armor_stand")) {
+            if (entityType.isSummonable() && entityType.getLootTableKey().isPresent() && !Objects.equals(entityType.toString(), "entity.minecraft.armor_stand") && !Objects.equals(entityType.toString(), "entity.minecraft.creaking")) {
                 monsters.add(entityType);
             }
         });

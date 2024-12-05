@@ -29,13 +29,11 @@ public class Challenge {
             for (ServerWorld world : server.getWorlds()) {
                 world.getPlayers().forEach(player -> {
 
-                    // Hardcode border reset to be around admin player
                     if (Objects.equals(player.getName().toString(), "literal{Ich_Bin_AFK}")) {
 
                         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 
                         if (mobId.get() == null && !delayActive.get()) {
-                            // this is called when the last mob was killed or on init server join
                             delayActive.set(true);
                             DelayedTask.scheduleDelayedTask(200, () -> {
 
