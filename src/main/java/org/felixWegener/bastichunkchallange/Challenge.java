@@ -24,45 +24,33 @@ public class Challenge {
         AtomicBoolean delayActive = new AtomicBoolean(false);
         AtomicReference<UUID> mobId = new AtomicReference<>();
 
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-
-            for (ServerWorld world : server.getWorlds()) {
-                if (!world.getPlayers().isEmpty()) {
-                    ServerPlayerEntity chosenPlayer = world.getPlayers().getFirst();
-
-                    if (mobId.get() == null && !delayActive.get()) {
-                        delayActive.set(true);
-
-                        DelayedTask.scheduleDelayedTask(200, () -> {
-                            ServerWorld ServerWorld = server.getOverworld();
-                            BlockPos mobSpawnPosition = new BlockPos(chosenPlayer.getBlockX(), chosenPlayer.getBlockY(), chosenPlayer.getBlockZ());
-
-                            PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld, chosenPlayer);
-                            Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
-
-                            mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));
-                            delayActive.set(false);
-                        });
-
-                    }
-
-                }
-
-            }
-
-        });
-
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+            if (!world.getPlayers().isEmpty()) {
+                ServerPlayerEntity chosenPlayer = world.getPlayers().getFirst();
 
-            if (entity instanceof LivingEntity livingEntity) {
-                if (livingEntity.isDead()) {
-                    if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
-                        mobId.set(null);
-                        PlayerMovementListener.removeWorldBoarderPlayerView(world);
+                if (entity instanceof LivingEntity livingEntity) {
+                    if (livingEntity.isDead()) {
+                        if (Objects.equals(entity.getUuid().toString(), mobId.toString())) {
+                            mobId.set(null);
+                            PlayerMovementListener.removeWorldBoarderPlayerView(world);
+                        }
                     }
                 }
-            }
+                if (mobId.get() == null && !delayActive.get()) {
+                    delayActive.set(true);
 
+                    DelayedTask.scheduleDelayedTask(200, () -> {
+                        BlockPos mobSpawnPosition = new BlockPos(chosenPlayer.getBlockX(), chosenPlayer.getBlockY(), chosenPlayer.getBlockZ());
+
+                        PlayerMovementListener.setWorldBoarderOnPlayer(world, chosenPlayer);
+                        Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
+
+                        mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), world, mobSpawnPosition));
+                        delayActive.set(false);
+                    });
+
+                }
+            }
         });
 
     }
