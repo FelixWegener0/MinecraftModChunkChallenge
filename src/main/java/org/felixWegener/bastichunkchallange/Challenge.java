@@ -37,7 +37,7 @@ public class Challenge {
                             ServerWorld ServerWorld = server.getOverworld();
                             BlockPos mobSpawnPosition = new BlockPos(chosenPlayer.getBlockX(), chosenPlayer.getBlockY(), chosenPlayer.getBlockZ());
 
-                            PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld);
+                            PlayerMovementListener.setWorldBoarderOnPlayer(ServerWorld, chosenPlayer);
                             Integer randomIndex = MonsterListGenerator.generateRandomNumber(monsters.size() - 1);
 
                             mobId.set(MobSpawner.spawnTargetMobNew(monsters.get(randomIndex), server.getOverworld(), mobSpawnPosition));

@@ -3,7 +3,6 @@ package org.felixWegener.bastichunkchallange;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.border.WorldBorder;
 
 public class PlayerMovementListener {
@@ -23,13 +22,10 @@ public class PlayerMovementListener {
         });
     }
 
-    public static void setWorldBoarderOnPlayer(ServerWorld world) {
+    public static void setWorldBoarderOnPlayer(ServerWorld world, ServerPlayerEntity player) {
         WorldBorder border = world.getWorldBorder();
 
-        world.getPlayers().forEach(player -> {
-            border.setCenter(player.getBlockX(), player.getBlockZ());
-        });
-
+        border.setCenter(player.getBlockX(), player.getBlockZ());
         border.setSize(32.0);
     }
 
