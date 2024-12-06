@@ -9,7 +9,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.entity.attribute.EntityAttributes;
 
-
 import java.util.Objects;
 import java.util.UUID;
 
